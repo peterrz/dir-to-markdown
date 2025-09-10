@@ -192,7 +192,7 @@ Suggested header:
 // (trimmed file content…)
 
 
----
+```
 
 ## 🩺 Troubleshooting
 
@@ -240,7 +240,7 @@ Suggested header:
   "excludeGlobs": ["node_modules/**","dist/**",".git/**"]
 }
 
-
+``` 
 Response
 
 { "ok": true, "filename": "snapshot-<folder>.md", "markdown": "..." }
