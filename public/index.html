@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Directory → Markdown</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial; }
+    body { margin: 0 auto; padding: 24px; max-width: 1400px; background: #fafafa; }
+    h1 { margin-top: 0; }
+    p.muted { color: #666; font-size: .9rem; }
+
+    fieldset {
+      border: none;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    legend { font-weight: 600; margin-bottom: .5rem; }
+
+    label { display: block; margin: .6rem 0; font-weight: 500; }
+    input[type="text"], input[type="number"], textarea {
+      width: 90%;
+      padding: .6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: .95rem;
+      margin-top: 8px;
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .actions { display: flex; gap: .75rem; align-items: center; margin-bottom: 1rem; margin-top: 4rem; }
+    button {
+      padding: .65rem 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #f6f6f6;
+      transition: all .2s ease;
+    }
+    button:hover { background: #eee; }
+    button.primary {
+      background: #111; color: white; border-color: #111;
+    }
+    button.primary:hover { background: #333; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; }
+    }
+
+    #preview {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #fff;
+      overflow-y: auto;
+      min-height: 300px;
+      max-height: 600px;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .directory-input {
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+    }
+    .directory-input input { flex: 1; }
+  </style>
+</head>
+<body>
+  <h1>Directory → Markdown</h1>
+  <p class="muted">Runs locally. Enter an absolute path on your machine, configure options, then generate.</p>
+
+  <div class="split">
+    <!-- Left side: Input -->
+    <div>
+      <fieldset>
+      
+        <label>Directory (absolute path)</label>
+        <div class="directory-input">
+          <input id="directory" type="text" placeholder="Folder name or absolute path" />
+        </div>
+
+        <label><input id="includeContents" type="checkbox" /> Include file contents</label>
+       <label><input id="analyze" type="checkbox" /> Analyze files & add comments</label>
+        <div class="row">
+          <label>Max depth (null = unlimited)
+            <input id="maxDepth" type="number" placeholder="null" />
+          </label>
+          <label>Max file size (bytes)
+            <input id="maxFileSizeBytes" type="number" value="500000" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Max lines per file
+            <input id="maxLinesPerFile" type="number" value="1200" />
+          </label>
+          <label>Max bytes per file
+            <input id="maxBytesPerFile" type="number" value="200000" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Max total bytes
+            <input id="maxTotalBytes" type="number" value="5000000" />
+          </label>
+          <label>Extensions whitelist (comma-separated)
+            <input id="extWhitelist" type="text" placeholder=".js,.ts,.md,.txt,.json,.html,.css,.py,..." />
+          </label>
+        </div>
+        <label>Exclude globs (comma-separated)
+          <input id="excludeGlobs" type="text" placeholder="node_modules/**,dist/**,.git/**,**/*.png" />
+        </label>
+      
+
+      <div class="actions">
+        <button class="primary" id="generateBtn">Generate Markdown</button>
+        <button id="downloadBtn" disabled>Download .md</button>
+       
+      </div>
+      <span id="status" class="muted" style=" font-weight: 500;"></span>
+    </div>
+
+    <!-- Right side: Preview -->
+    <div  >
+      <fieldset>
+        <label>Preview</label>
+        <div id="preview" style="max-width: 600px; white-space: pre-wrap;">Your Markdown will appear here…</div>
+      </fieldset>
+    </div>
+  </div>
+
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="./client.js"></script>
+
+  <script>
+    const previewEl = document.getElementById("preview");
+    const directoryInput = document.getElementById("directory");
+    const statusEl = document.getElementById("status");
+  
+    // Preview update function
+    function updatePreview(mdText) {
+      previewEl.innerHTML = marked.parse(mdText || "");
+    }
+  
+    // Example
+    updatePreview("# Hello\nThis is **Markdown** preview 🚀");
+ 
+      // auto-enable contents if analyze is turned on
+  document.getElementById('analyze').addEventListener('change', (e) => {
+    if (e.target.checked) document.getElementById('includeContents').checked = true;
+  });
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+    "name": "dir-to-markdown",
+    "version": "1.1.0",
+    "description": "Generate a single Markdown (.md) summary of a directory (tree + optional file contents).",
+    "type": "module",
+    "bin": {
+      "dir2md": "./index.mjs"
+    },
+    "scripts": {
+      "start": "node server.mjs",
+      "cli": "node index.mjs",
+      "dev": "node server.mjs"
+    },
+    "dependencies": {
+      "commander": "^12.1.0",
+      "express": "^4.19.2",
+      "micromatch": "^4.0.7"
+    },
+    "engines": {
+      "node": ">=18"
+    },
+    "license": "MIT"
+  }
+  
